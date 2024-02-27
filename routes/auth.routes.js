@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
 const { isAuthenticated } = require('../middleware/jwt.middleware.js');
+const fileUploader = require('../config/cloudinary.config.js');
 
 const saltRounds = 13;
 
