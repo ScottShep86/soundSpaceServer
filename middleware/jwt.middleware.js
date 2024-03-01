@@ -13,6 +13,7 @@ function getTokenFromHeaders(req) {
     req.headers.authorization.split(' ')[0] === 'Bearer'
   ) {
     const token = req.headers.authorization.split(' ')[1];
+    console.log('Extracted token:', token);
     return token;
   }
 

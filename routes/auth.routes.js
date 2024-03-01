@@ -3,11 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
 const { isAuthenticated } = require('../middleware/jwt.middleware.js');
-const fileUploader = require('../config/cloudinary.config.js');
 
 const saltRounds = 13;
 
-router.post('/signup', (req, res, next) => {
+router.post('/register', (req, res, next) => {
   const { firstName, lastName, email, password, picture, location } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
@@ -96,6 +95,16 @@ router.post('/login', (req, res, next) => {
 router.get('/verify', isAuthenticated, (req, res, next) => {
   console.log(`req.payload`, req.payload);
   res.status(200).json(req.payload);
+});
+
+router.get('/profile/:id', isAuthenticated, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const response = await User.findById(id);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 module.exports = router;
