@@ -6,6 +6,7 @@ const { isAuthenticated } = require('../middleware/jwt.middleware.js');
 
 const saltRounds = 13;
 
+// POST to register a new user
 router.post('/register', (req, res, next) => {
   const { firstName, lastName, email, password, picture, location } = req.body;
 
@@ -59,6 +60,7 @@ router.post('/register', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// POST to login to an account
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
 
@@ -92,10 +94,12 @@ router.post('/login', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// GET to verify the account
 router.get('/verify', isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
+// GET the user profile
 router.get('/profile/:id', isAuthenticated, async (req, res, next) => {
   try {
     const { id } = req.params;
