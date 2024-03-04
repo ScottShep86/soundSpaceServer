@@ -86,14 +86,13 @@ router.post('/login', (req, res, next) => {
         });
         res.status(200).json({ authToken: authToken });
       } else {
-        res.status(401).json({ message: 'Unable to authenticate the user' });
+        res.status(401).json({ message: 'Email or Password is incorrect' });
       }
     })
     .catch(err => next(err));
 });
 
 router.get('/verify', isAuthenticated, (req, res, next) => {
-  console.log(`req.payload`, req.payload);
   res.status(200).json(req.payload);
 });
 
