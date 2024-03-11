@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const Job = require('../models/Job.model');
+const JobMessage = require('../models/JobMessage');
 
 const { isAuthenticated } = require('../middleware/jwt.middleware');
 
@@ -61,6 +62,24 @@ router.get('/:id', isAuthenticated, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// DELETE a job by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Delete the job
+    await Job.findByIdAndDelete(id);
+
+    // Delete job messages associated with the job
+    await JobMessage.deleteMany({ job: id });
+
+    res.sendStatus(204); // No content - successful deletion
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
