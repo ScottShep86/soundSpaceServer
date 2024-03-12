@@ -27,13 +27,12 @@ router.get('/all', async (req, res) => {
   try {
     let filter = {};
     if (search) {
-      filter = { location: { $regex: search, $options: 'i' } };
-      /*     }
-      if(searchLocation) {
-          filter = {location: {$regex: search, $option: "i"}}
-      }
-      if(searchGenre) {
-          filter = {genre: {$regex: search, $option: "i"}} */
+      filter = {
+        $or: [
+          { title: { $regex: search, $options: 'i' } },
+          { location: { $regex: search, $options: 'i' } },
+        ],
+      };
     }
     const allJobs = await Job.find(filter);
     res.status(200).json(allJobs);
