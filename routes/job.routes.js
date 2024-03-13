@@ -64,6 +64,24 @@ router.get('/:id', isAuthenticated, async (req, res) => {
   }
 });
 
+// PUT to edit a job
+router.put('/:id/edit', isAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedJob = await Job.findByIdAndUpdate(id, req.body, { new: true });
+    console.log('updated job:', updatedJob);
+
+    if (!updatedJob) {
+      return res
+        .status(404)
+        .json({ message: 'Job not found or unauthorized access' });
+    }
+    res.status(200).json(updatedJob);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 // DELETE a job by ID
 router.delete('/:id', async (req, res) => {
   try {
